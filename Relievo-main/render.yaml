@@ -1,0 +1,41 @@
+# Render Blueprint for the backend API. Secrets are marked sync: false: Render asks you for them, they are never in git.
+services:
+  - type: web
+    name: reliefrelay-api
+    runtime: node
+    plan: free            # sleeps when idle: warm it up before a demo
+    region: singapore     # pick the region closest to your Supabase project and Nexconn data center
+    buildCommand: npm ci --workspace=backend
+    startCommand: npm run start -w backend
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production
+      - key: MOCK_CHAT
+        value: "false"
+      - key: MOCK_AI
+        value: "false"
+      - key: MOCK_DB
+        value: "false"
+      - key: DEMO_LOGIN
+        value: "true"
+      - key: NEXCONN_API_DOMAIN
+        value: api.sg-light-api.com
+      - key: OPENROUTER_MODEL
+        value: particle-ai/particle-1:free
+      - key: FRONTEND_URL
+        sync: false
+      - key: NEXCONN_APP_KEY
+        sync: false
+      - key: NEXCONN_APP_SECRET
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false

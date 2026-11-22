@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "nexconn-chat": {
+      "source": "NexconnAI-Dev/nexconn-skills",
+      "sourceType": "github",
+      "skillPath": "skills/nexconn-chat/SKILL.md",
+      "computedHash": "81ada7ea4e8b62ba7c0575de98aee7fb72cb5f1fd621dad739920083e700b4bb"
+    }
+  }
+}

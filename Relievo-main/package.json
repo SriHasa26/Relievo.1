@@ -1,0 +1,14 @@
+{
+  "name": "reliefrelay",
+  "private": true,
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "test": "npm test -w backend",
+    "smoke": "node scripts/smoke.mjs",
+    "e2e:chat": "npm test --prefix e2e",
+    "e2e:v3": "npm run test:v3 --prefix e2e",
+    "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend"
+  },
+  "devDependencies": { "concurrently": "^9.0.0" }
+}

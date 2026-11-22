@@ -1,0 +1,286 @@
+/* Relievo design tokens and component styles: the ONE theme file.
+   Palette: graphite (dark) / warm sand (light), ember orange for action, teal = verified, green = resolved,
+   amber = warning, red = real emergencies only.
+   Theme is a data-theme attribute on <html> ("light" | "dark"), set before first paint by index.html.
+   Rules: blur only on floating panels (.glass); neumorphism only on soft controls (.neu-*);
+   animation on transform/opacity (plus SVG dash for route lines); everything honours prefers-reduced-motion. */
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius-sm: 0.5rem; --radius-md: 0.75rem; --radius-lg: 1rem;
+  --blur: 14px;
+  --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 480ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- light: warm sand ---------- */
+:root, :root[data-theme="light"] {
+  --bg: #f6f3ee; --surface: #ffffff; --surface-2: #efeae2;
+  --text: #1b1814; --muted: #5c554b; --border: #d6cec1;
+  --brand: #c2410c;              /* ember as text / icon colour on sand (AA) */
+  --brand-solid: #c2410c;        /* ember button background */
+  --brand-solid-hover: #9a3412;
+  --brand-ink: #ffffff;          /* text on the solid ember background */
+  --danger-ink: #9a3412;
+  --focus: #9a3412;
+  --glass-bg: rgb(255 255 255 / 0.74); --glass-solid: #ffffff; --glass-border: rgb(27 24 20 / 0.1);
+  --shadow-soft: 0 1px 2px rgb(60 40 20 / 0.06), 0 6px 18px rgb(60 40 20 / 0.07);
+  --shadow-float: 0 18px 40px -14px rgb(60 40 20 / 0.35), 0 4px 10px rgb(60 40 20 / 0.12);
+  --mesh-a: rgb(242 115 58 / 0.16); --mesh-b: rgb(20 184 166 / 0.1);
+  --pill-gray-bg: #e7e1d6;   --pill-gray-fg: #3a352d;
+  --pill-teal-bg: #d5eeea;   --pill-teal-fg: #0b4f4a;
+  --pill-green-bg: #dcefd9;  --pill-green-fg: #1c4d1f;
+  --pill-amber-bg: #fbe9c0;  --pill-amber-fg: #6b4300;
+  --pill-red-bg: #fadcd8;    --pill-red-fg: #8a1c12;
+  --pill-ember-bg: #fbdccb;  --pill-ember-fg: #7a2e08;
+  --neu-bg: #ece7df; --neu-hi: #ffffff; --neu-lo: #cdc4b5;
+  color-scheme: light;
+}
+
+/* ---------- dark: graphite ---------- */
+:root[data-theme="dark"] {
+  --bg: #0e1114; --surface: #161a1f; --surface-2: #1e242b;
+  --text: #ece8e1; --muted: #a5a9ae; --border: #2a3139;
+  --brand: #f2733a; --brand-solid: #f2733a; --brand-solid-hover: #ff8a55; --brand-ink: #1a0f08;
+  --danger-ink: #ffb08a;
+  --focus: #ff9d6b;
+  --glass-bg: rgb(22 26 31 / 0.66); --glass-solid: #161a1f; --glass-border: rgb(236 232 225 / 0.12);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3);
+  --shadow-float: 0 20px 44px -12px rgb(0 0 0 / 0.65), 0 4px 10px rgb(0 0 0 / 0.3);
+  --mesh-a: rgb(242 115 58 / 0.14); --mesh-b: rgb(20 184 166 / 0.09);
+  --pill-gray-bg: #2a3139;   --pill-gray-fg: #d5d9dd;
+  --pill-teal-bg: #12403d;   --pill-teal-fg: #bff0ea;
+  --pill-green-bg: #1e3f22;  --pill-green-fg: #cdebcb;
+  --pill-amber-bg: #4a3410;  --pill-amber-fg: #fbe2a6;
+  --pill-red-bg: #5c1a14;    --pill-red-fg: #ffd6d1;
+  --pill-ember-bg: #55260f;  --pill-ember-fg: #ffd9c2;
+  --neu-bg: #1b2026; --neu-hi: #272e36; --neu-lo: #0a0c0f;
+  color-scheme: dark;
+}
+
+/* status lights */
+:root { --led-red: #ef4444; --led-amber: #f5a524; --led-teal: #14b8a6; --led-green: #22c55e; --led-gray: #9a9fa6; --led-ember: #f2733a; }
+
+html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+html.large-text { font-size: 21px; } /* every rem-based size, spacing and map height scales with it */
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); }
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+*, ::before, ::after { border-color: var(--border); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.text-brand { color: var(--brand); }
+.muted { color: var(--muted); }
+
+/* ---------- app root ---------- */
+.app-root { min-height: 100vh; background: var(--bg); color: var(--text); }
+.mesh {
+  background:
+    radial-gradient(52rem 32rem at 8% -8%, var(--mesh-a), transparent 60%),
+    radial-gradient(44rem 28rem at 98% 4%, var(--mesh-b), transparent 60%),
+    var(--bg);
+}
+/* role-specific accent in the background wash */
+.app-root[data-role="coordinator"] { --mesh-b: rgb(20 184 166 / 0.12); }
+.app-root[data-role="volunteer"] { --mesh-b: rgb(34 197 94 / 0.1); }
+.page-enter { animation: page-in var(--dur-slow) var(--ease-out) both; }
+
+/* ---------- surfaces ---------- */
+.rr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); }
+.rr-card-head { border-bottom: 1px solid var(--border); padding: 0.75rem 1rem; }
+.glass { background: var(--glass-solid); border: 1px solid var(--glass-border); box-shadow: var(--shadow-float); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--glass-bg); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4); backdrop-filter: blur(var(--blur)) saturate(1.4); }
+}
+.float-map { border-radius: var(--radius-lg); box-shadow: var(--shadow-float); border: 1px solid var(--border); overflow: hidden; transition: transform var(--dur-base) var(--ease-out); }
+.float-map:hover { transform: translateY(-3px); }
+.map-overlay { position: absolute; z-index: 1000; left: 0.75rem; bottom: 1.75rem; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-size: 0.75rem; color: var(--text); }
+
+/* ---------- map theming (no extra tile provider: CSS filter on the OSM tile layer) ---------- */
+:root[data-theme="dark"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(0.92) saturate(0.45) sepia(0.2); }
+:root[data-theme="light"] .leaflet-tile-pane { filter: sepia(0.18) saturate(0.85); }
+.leaflet-container { background: var(--surface-2); font-family: var(--font-sans); }
+.leaflet-bar a, .leaflet-bar a:hover { background-color: var(--surface); color: var(--text); border-color: var(--border); }
+.leaflet-bar a:hover { background-color: var(--surface-2); }
+.leaflet-control-attribution { background: var(--glass-bg) !important; color: var(--muted) !important; }
+.leaflet-control-attribution a { color: var(--brand) !important; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--text); }
+.leaflet-popup-content, .leaflet-popup-content strong { color: var(--text); }
+.pin-drop { animation: pin-drop 0.6s var(--ease-spring) both; transform-origin: bottom center; }
+.route-line { stroke-dasharray: 8 10; animation: dash 1.1s linear infinite; }
+.coverage { animation: coverage-in 0.9s var(--ease-out) both; transform-box: fill-box; transform-origin: center; }
+.vol-dot { animation: pulse-soft 2s ease-in-out infinite; }
+
+/* ---------- pills + LEDs ---------- */
+.led { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 9999px; flex: none; background: var(--c); box-shadow: inset 0 -1px 2px rgb(0 0 0 / 0.35), inset 0 1px 1px rgb(255 255 255 / 0.5), 0 0 0 1px rgb(0 0 0 / 0.2); }
+.led-glow { box-shadow: inset 0 -1px 2px rgb(0 0 0 / 0.3), inset 0 1px 1px rgb(255 255 255 / 0.55), 0 0 0.55rem 0.12rem var(--c); }
+.led-pulse { animation: led-pulse 1.4s ease-in-out infinite; }
+.pill { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 9999px; padding: 0.15rem 0.65rem 0.15rem 0.5rem; font-size: 0.75rem; font-weight: 600; line-height: 1.25rem; background: var(--pb); color: var(--pf); }
+.tone-gray  { --pb: var(--pill-gray-bg);  --pf: var(--pill-gray-fg);  --c: var(--led-gray); }
+.tone-teal  { --pb: var(--pill-teal-bg);  --pf: var(--pill-teal-fg);  --c: var(--led-teal); }
+.tone-green { --pb: var(--pill-green-bg); --pf: var(--pill-green-fg); --c: var(--led-green); }
+.tone-amber { --pb: var(--pill-amber-bg); --pf: var(--pill-amber-fg); --c: var(--led-amber); }
+.tone-red   { --pb: var(--pill-red-bg);   --pf: var(--pill-red-fg);   --c: var(--led-red); }
+.tone-ember { --pb: var(--pill-ember-bg); --pf: var(--pill-ember-fg); --c: var(--led-ember); }
+
+/* ---------- buttons ---------- */
+.btn-brand { background: var(--brand-solid); color: var(--brand-ink); }
+.btn-brand:hover { background: var(--brand-solid-hover); }
+.btn-inverse { background: var(--text); color: var(--bg); }
+.btn-inverse:hover { filter: brightness(1.15); }
+.btn-physical {
+  position: relative; color: var(--brand-ink); font-weight: 700; border-radius: var(--radius-md);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-solid) 82%, white) 0%, var(--brand-solid) 55%, color-mix(in srgb, var(--brand-solid) 82%, black) 100%);
+  border: 1px solid color-mix(in srgb, var(--brand-solid) 60%, black);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.4), inset 0 -2px 0 rgb(0 0 0 / 0.22), 0 3px 0 color-mix(in srgb, var(--brand-solid) 45%, black), 0 8px 14px rgb(0 0 0 / 0.3);
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), filter var(--dur-fast);
+}
+.btn-physical:hover { filter: brightness(1.06); }
+.btn-physical:active { transform: translateY(3px); box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.4), 0 0 0 transparent, 0 2px 4px rgb(0 0 0 / 0.25); }
+.btn-physical:disabled { filter: grayscale(0.6); }
+.btn-confirmed { background: var(--pill-teal-bg) !important; color: var(--pill-teal-fg) !important; border-color: var(--led-teal) !important; box-shadow: none !important; transform: translateY(3px); }
+.rr-btn { transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast), border-color var(--dur-fast); }
+.rr-btn:not(:disabled):active { transform: scale(0.97); }
+
+/* ---------- neumorphic soft controls (switches, segmented, meters; never text content) ---------- */
+.neu-switch { position: relative; width: 3.25rem; height: 1.75rem; border-radius: 9999px; border: 1px solid var(--border); background: var(--neu-bg); box-shadow: inset 3px 3px 6px var(--neu-lo), inset -3px -3px 6px var(--neu-hi); cursor: pointer; flex: none; }
+.neu-switch::after { content: ""; position: absolute; top: 0.2rem; left: 0.2rem; width: 1.3rem; height: 1.3rem; border-radius: 9999px; background: var(--neu-bg); box-shadow: 2px 2px 5px var(--neu-lo), -2px -2px 5px var(--neu-hi); transition: transform var(--dur-base) var(--ease-spring), background-color var(--dur-base); }
+.neu-switch[aria-checked="true"]::after { transform: translateX(1.5rem); background: var(--brand-solid); }
+.neu-segment { display: inline-flex; gap: 0.25rem; padding: 0.3rem; border-radius: 9999px; background: var(--neu-bg); box-shadow: inset 3px 3px 6px var(--neu-lo), inset -3px -3px 6px var(--neu-hi); }
+.neu-segment button { border: 0; border-radius: 9999px; padding: 0.4rem 0.9rem; min-height: 2.25rem; font-size: 0.875rem; font-weight: 600; color: var(--muted); background: transparent; cursor: pointer; }
+.neu-segment button[aria-checked="true"] { color: var(--text); background: var(--neu-bg); box-shadow: 2px 2px 5px var(--neu-lo), -2px -2px 5px var(--neu-hi); }
+.neu-meter { height: 0.9rem; border-radius: 9999px; background: var(--neu-bg); box-shadow: inset 2px 2px 4px var(--neu-lo), inset -2px -2px 4px var(--neu-hi); overflow: hidden; }
+.neu-meter > i { display: block; height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--led-teal), var(--led-ember)); transform-origin: left; animation: bar-grow 0.9s var(--ease-out) both; }
+.theme-toggle { display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; border: 1px solid var(--border); background: var(--neu-bg); color: var(--text); box-shadow: 2px 2px 5px var(--neu-lo), -2px -2px 5px var(--neu-hi); cursor: pointer; transition: transform var(--dur-fast); }
+.theme-toggle:active { transform: scale(0.94); }
+
+/* ---------- 3D (tilt only on fine pointers; pipeline simplified on touch / small screens / reduced motion) ---------- */
+.tilt { transform-style: preserve-3d; transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base); will-change: transform; }
+.tilt-wrap { perspective: 900px; }
+.timeline-3d { perspective: 1100px; }
+.timeline-3d > li { transform: rotateX(var(--rx, 0deg)); transform-origin: top center; transition: transform var(--dur-base) var(--ease-out); }
+.timeline-3d > li:hover { transform: translateZ(14px) scale(1.01); }
+
+/* ---------- scroll reveal ---------- */
+.reveal { opacity: 0; transform: translateY(24px) scale(0.98); transition: opacity 0.7s var(--ease-out) var(--d, 0ms), transform 0.7s var(--ease-out) var(--d, 0ms); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- landing ---------- */
+.land-section { min-height: 100vh; display: flex; align-items: center; position: relative; }
+.eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); }
+.hero-rise { animation: rise 0.8s var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.radar-sweep { transform-origin: 300px 300px; animation: spin 7s linear infinite; }
+.ping-dot { transform-box: fill-box; transform-origin: center; animation: ping 2.4s ease-out infinite; animation-delay: var(--d, 0s); }
+.ping-critical { animation-duration: 1.6s; }
+.chip-float { animation: float 6s ease-in-out infinite; animation-delay: var(--d, 0s); }
+.pipe-stage { perspective: 1500px; }
+.pipe-world { transform-style: preserve-3d; transform: rotateX(5deg) rotateY(-9deg); }
+.pipe-card { position: absolute; inset: 0; margin: auto; will-change: transform, opacity; }
+.beam { position: relative; height: 4px; border-radius: 9999px; background: var(--border); overflow: hidden; }
+.beam > i { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--led-teal), var(--led-ember)); box-shadow: 0 0 12px var(--led-ember); }
+.typewriter { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; border-right: 2px solid var(--brand); animation: typing-w 3.2s steps(49, end) both, caret 0.8s step-end infinite; max-width: 100%; }
+.field-pop { animation: rise 0.5s var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.bar-fill > i { display: block; height: 100%; border-radius: inherit; transform-origin: left; animation: bar-grow 1.1s var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.swap-a { animation: swap-out 0.01s 1.6s forwards; }
+.swap-b { opacity: 0; animation: swap-in 0.5s 1.6s var(--ease-spring) forwards; }
+
+/* ---------- SOS button ---------- */
+.sos-btn { background: #c81e1e; color: #fff; border: 2px solid #7f1d1d; box-shadow: 0 3px 0 #7f1d1d, 0 0 0 0 rgb(220 38 38 / 0.55); animation: sos-pulse 2.4s ease-out infinite; transition: transform var(--dur-fast); cursor: pointer; }
+.sos-btn:hover { filter: brightness(1.1); }
+.sos-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #7f1d1d; }
+@keyframes sos-pulse { 70% { box-shadow: 0 3px 0 #7f1d1d, 0 0 0 14px rgb(220 38 38 / 0); } 100% { box-shadow: 0 3px 0 #7f1d1d, 0 0 0 0 rgb(220 38 38 / 0); } }
+
+/* ---------- emergency alert ---------- */
+.alert-glow { position: fixed; inset: 0; z-index: 1050; pointer-events: none; box-shadow: inset 0 0 0 3px rgb(239 68 68 / 0.55), inset 0 0 90px 8px rgb(239 68 68 / 0.28); animation: glow-pulse 1.8s ease-in-out infinite; }
+.alert-banner { border: 1px solid #ef4444; background: color-mix(in srgb, #ef4444 16%, var(--surface)); color: var(--text); border-radius: var(--radius-lg); box-shadow: 0 0 0 3px rgb(239 68 68 / 0.18), var(--shadow-soft); animation: banner-in 0.5s var(--ease-spring) both; }
+.alert-tag { background: #dc2626; color: #fff; font-weight: 800; letter-spacing: 0.12em; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 0.4rem; animation: led-pulse 1.4s ease-in-out infinite; }
+.shake-once { animation: shake 0.6s ease-in-out 2; }
+.flash-change { animation: flash 1.6s ease-out 1; }
+.fresh-in { animation: fresh-in 0.7s var(--ease-spring) both; }
+.card-critical { border-color: #ef4444; box-shadow: 0 0 0 1px #ef4444, 0 0 18px rgb(239 68 68 / 0.25); }
+
+/* ---------- chat ---------- */
+.bubble { animation: bubble-in var(--dur-base) var(--ease-spring) both; transform-origin: bottom; }
+.bubble-mine { background: var(--brand-solid); color: var(--brand-ink); }
+.bubble-theirs { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.typing i { display: inline-block; width: 0.35rem; height: 0.35rem; margin: 0 0.1rem; border-radius: 9999px; background: currentColor; animation: typing 1.1s ease-in-out infinite; }
+.typing i:nth-child(2) { animation-delay: 0.15s; } .typing i:nth-child(3) { animation-delay: 0.3s; }
+
+/* ---------- skeleton, toast, lists, steps ---------- */
+.skeleton { background: linear-gradient(90deg, var(--surface-2) 0, color-mix(in srgb, var(--surface-2) 70%, var(--text) 10%) 50%, var(--surface-2) 100%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: var(--radius-sm); }
+.shimmer-in { position: relative; overflow: hidden; }
+.shimmer-in::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--brand) 30%, transparent) 50%, transparent 70%); transform: translateX(-100%); animation: sweep-x 1.1s ease-out both; animation-delay: var(--d, 0ms); pointer-events: none; }
+.toast { animation: toast-in var(--dur-base) var(--ease-spring) both; }
+.check-path { stroke-dasharray: 26; stroke-dashoffset: 26; animation: draw 0.45s 0.1s var(--ease-out) forwards; }
+.stagger > * { animation: rise var(--dur-slow) var(--ease-out) both; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; } .stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; } .stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(6) { animation-delay: 250ms; } .stagger > *:nth-child(n+7) { animation-delay: 300ms; }
+.step-dot { width: 1.75rem; height: 1.75rem; border-radius: 9999px; display: grid; place-items: center; font-size: 0.75rem; font-weight: 700; background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); transition: background-color var(--dur-base), color var(--dur-base), transform var(--dur-base) var(--ease-spring); }
+.step-dot.done { background: var(--brand-solid); color: var(--brand-ink); border-color: transparent; transform: scale(1.08); }
+.count--anim { color: transparent; position: relative; }
+.count--anim::after { content: attr(data-live); position: absolute; left: 0; top: 0; color: var(--text); }
+.gauge-needle { transition: transform var(--dur-slow) var(--ease-spring); transform-origin: 50px 50px; }
+.pulse-ring { transform-box: fill-box; transform-origin: center; animation: ring 1.8s ease-out infinite; pointer-events: none; }
+
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes bubble-in { from { opacity: 0; transform: scale(0.85) translateY(6px); } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(14px) scale(0.96); } }
+@keyframes bar-grow { from { transform: scaleX(0); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes typing { 0%, 60%, 100% { transform: translateY(0); opacity: 0.45; } 30% { transform: translateY(-0.25rem); opacity: 1; } }
+@keyframes ring { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(2.6); opacity: 0; } }
+@keyframes led-pulse { 50% { opacity: 0.45; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes ping { 0% { transform: scale(0.4); opacity: 0.9; } 100% { transform: scale(3); opacity: 0; } }
+@keyframes float { 50% { transform: translateY(-10px); } }
+@keyframes typing-w { from { width: 0; } to { width: 100%; } }
+@keyframes caret { 50% { border-color: transparent; } }
+@keyframes swap-out { to { opacity: 0; } }
+@keyframes swap-in { to { opacity: 1; } }
+@keyframes glow-pulse { 50% { opacity: 0.45; } }
+@keyframes banner-in { from { opacity: 0; transform: translateY(-14px) scale(0.98); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+@keyframes flash { 0% { box-shadow: 0 0 0 3px var(--led-ember); } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes fresh-in { from { opacity: 0; transform: translateY(-16px) scale(0.97); } }
+@keyframes pin-drop { 0% { opacity: 0; transform: translateY(-40px) scale(0.8); } 70% { opacity: 1; transform: translateY(4px) scale(1.05); } 100% { transform: none; } }
+@keyframes dash { to { stroke-dashoffset: -36; } }
+@keyframes coverage-in { from { opacity: 0; transform: scale(0.6); } }
+@keyframes pulse-soft { 50% { opacity: 0.55; } }
+@keyframes sweep-x { to { transform: translateX(100%); } }
+
+/* ---------- legacy utility remap: existing pages use light Tailwind classes; in the dark theme they read from tokens ---------- */
+:root[data-theme="dark"] .bg-white { background-color: var(--surface); }
+:root[data-theme="dark"] .bg-slate-50, :root[data-theme="dark"] .bg-slate-100 { background-color: var(--surface-2); }
+:root[data-theme="dark"] .hover\:bg-slate-100:hover { background-color: var(--surface-2); }
+:root[data-theme="dark"] .text-slate-900 { color: var(--text); }
+:root[data-theme="dark"] .text-slate-400, :root[data-theme="dark"] .text-slate-500, :root[data-theme="dark"] .text-slate-600, :root[data-theme="dark"] .text-slate-700 { color: var(--muted); }
+:root[data-theme="dark"] .border-slate-100, :root[data-theme="dark"] .border-slate-200, :root[data-theme="dark"] .border-slate-300 { border-color: var(--border); }
+:root[data-theme="dark"] input:not([type="checkbox"]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea { background-color: var(--surface-2); color: var(--text); border-color: var(--border); }
+:root[data-theme="dark"] ::placeholder { color: var(--muted); }
+/* both themes: warning and error text come from tokens (errors are ember, never emergency red) */
+.text-red-700, .text-red-800 { color: var(--danger-ink); }
+.text-amber-700, .text-amber-800 { color: var(--pill-amber-fg); }
+:root[data-theme="dark"] .text-amber-700, :root[data-theme="dark"] .text-amber-800 { color: #fbd77a; }
+.bg-red-50 { background-color: var(--pill-ember-bg); }
+.bg-amber-50, .bg-amber-100 { background-color: var(--pill-amber-bg); }
+.text-amber-900 { color: var(--pill-amber-fg); }
+input:not([type="checkbox"]), select, textarea { background-color: var(--surface); color: var(--text); }
+:root[data-theme="dark"] input:not([type="checkbox"]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea { background-color: var(--surface-2); }
+
+/* ---------- reduced motion: landing becomes a clean static layout; the red alert stays but does not move ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, ::before, ::after { animation-duration: 0.001ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  .tilt, .timeline-3d > li, .float-map, .pipe-world { transform: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  .pulse-ring, .led-pulse, .radar-sweep, .ping-dot, .chip-float, .route-line, .alert-tag { animation: none !important; }
+  .alert-glow { animation: none !important; opacity: 0.8; }
+  .typewriter { width: auto !important; border-right: 0; }
+  .swap-a { opacity: 0; } .swap-b { opacity: 1; }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "reliefrelay-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "playwright test", "test:v3": "playwright test -c playwright.v3.config.ts" },
+  "devDependencies": { "@playwright/test": "^1.49.0", "@types/node": "^20.0.0", "typescript": "^5.6.0" }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "reliefrelay-backend",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "seed:supabase": "tsx scripts/seed-supabase.ts",
+    "verify:nexconn": "tsx scripts/verify-nexconn.ts",
+    "verify:supabase": "tsx scripts/verify-supabase.ts",
+    "verify:schema": "tsx scripts/verify-schema.ts",
+    "reset:demo": "tsx scripts/reset-demo.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "tsx": "^4.19.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relievo: from emergency signals to coordinated action</title>
+    <meta name="description" content="Relievo turns emergency reports into structured incidents. AI suggests; a human coordinator verifies and approves every assignment. Demo with synthetic data." />
+    <meta property="og:title" content="Relievo" />
+    <meta property="og:description" content="Disaster-response coordination: smart intake, AI triage, explainable dispatch and real-time incident rooms. Synthetic demo data." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0e1114" />
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("rr-theme"); } catch (e) {}
+        if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+        try { if (localStorage.getItem("rr-large-text") === "1") document.documentElement.classList.add("large-text"); } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
